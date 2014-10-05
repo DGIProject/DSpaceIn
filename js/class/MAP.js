@@ -128,9 +128,6 @@ MAP.prototype.drawGrid = function(context2d, newBloc) {
 
             this.mapClass[y][x].position.y++;
 
-            context2d.drawImage(document.getElementById('texture2'), 0, 0, 20, 20, this.mapClass[y][x].position.x, this.mapClass[y][x].position.y, 20, 20);
-
-            /*
             context2d.beginPath();
             context2d.rect(this.mapClass[y][x].position.x, this.mapClass[y][x].position.y, 20, 20);
 
@@ -147,7 +144,6 @@ MAP.prototype.drawGrid = function(context2d, newBloc) {
 
             context2d.strokeStyle = 'black';
             context2d.stroke();
-            */
         }
     }
 
