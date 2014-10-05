@@ -38,17 +38,32 @@ PLANE.prototype.gModel = function() {
 PLANE.prototype.drawPlane = function(context2d, direction) {
     if(this.isLoaded)
     {
-
         if(this.isPlayer)
         {
-            //MOVE TO DIRECTION
+            //ANIMATION
+        }
+
+        context2d.drawImage(document.getElementById('space'), this.properties.pos.x, this.properties.pos.y);
+    }
+};
+
+PLANE.prototype.animationMove = function(context2d, direction) {
+
+};
+
+PLANE.prototype.movePlane = function(direction) {
+    if(this.isLoaded)
+    {
+        if(this.isPlayer)
+        {
+            this.properties.pos = this.nextPos(direction);
         }
         else
         {
-            var nextPos = this.nextPos(direction);
+            this.properties.pos.x += 0.5;
         }
     }
-};
+}
 
 PLANE.prototype.nextPos = function(direction) {
     var newPos = {x: 0, y: 0};
