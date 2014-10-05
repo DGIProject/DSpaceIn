@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="CLangue">
+    <serverData>
+      <paths name="CLangue">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/other/DSpaceIn" local="$PROJECT_DIR$" web="/other/DSpaceIn" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
+

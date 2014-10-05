@@ -9,4 +9,10 @@ function initializeGame() {
     game = new GAME(0, 'Test', 'canvas', {width: 500, height: 500});
 }
 
+function startGame() {
+    setInterval(function() {
+        game.drawScene();
+    }, 30);
+}
+
 initializeGame();
