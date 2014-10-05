@@ -23,10 +23,10 @@ GAME.prototype.createElements = function() {
     this.planes.push(this.planeP);
 };
 
-GAME.prototype.drawScene = function(newBloc, margin) {
+GAME.prototype.drawScene = function(newBloc) {
     this.context2d.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.map.drawGrid(this.context2d, newBloc, margin);
+    this.map.drawGrid(this.context2d, newBloc);
 
     /*
     for(var i = 0; i < this.planes.length; i++)

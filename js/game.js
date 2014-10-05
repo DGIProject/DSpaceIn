@@ -5,7 +5,7 @@
 var canvas, context2d;
 var game;
 
-var margin = 0;
+var margin = 20;
 
 function initializeGame() {
     game = new GAME(0, 'Test', 'canvas', {width: 500, height: 500});
@@ -17,15 +17,15 @@ function startGame() {
         {
             margin = 0;
 
-            game.drawScene(true, margin);
+            game.drawScene(true);
         }
         else
         {
-            game.drawScene(false, margin);
+            game.drawScene(false);
         }
 
-        margin += 0.25;
-    }, 10);
+        margin += 1;
+    }, 100);
 }
 
 initializeGame();
