@@ -7,6 +7,8 @@ function BLOC(id, name, texture) {
     this.name = name;
     this.texture = texture;
 
+    this.canGo = true;
+
     this.position = {x: 0, y: 0};
 
     this.firstTime = true;
