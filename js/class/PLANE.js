@@ -50,16 +50,11 @@ PLANE.prototype.drawPlane = function(context2d) {
             //ANIMATION
             var newGapPos = this.posGap();
 
-            console.log(this.test, newGapPos, this.properties.pos.y);
+            //console.log(this.test, newGapPos, this.properties.pos.y);
 
             context2d.drawImage(document.getElementById('space'), (newGapPos.x * 20), (newGapPos.y * 20));
 
-            if(newGapPos.x >= this.properties.pos.x && newGapPos.y >= this.properties.pos.y)
-            {
-                console.log('endAnimation');
-
-                this.isAnimating = false;
-            }
+            this.isFinishedAnimation(newGapPos);
         }
         else
         {
@@ -70,9 +65,9 @@ PLANE.prototype.drawPlane = function(context2d) {
 
 PLANE.prototype.posGap = function() {
     if (this.direction === DIRECTION.LEFT) {
-        this.oldPos.x += this.properties.gap;
-    } else if (this.direction === DIRECTION.RIGHT) {
         this.oldPos.x -= this.properties.gap;
+    } else if (this.direction === DIRECTION.RIGHT) {
+        this.oldPos.x += this.properties.gap;
     } else if (this.direction === DIRECTION.TOP) {
         this.oldPos.y -= this.properties.gap;
     } else if (this.direction === DIRECTION.BOTTOM) {
@@ -80,6 +75,27 @@ PLANE.prototype.posGap = function() {
     }
 
     return {x: this.oldPos.x, y : this.oldPos.y};
+};
+
+PLANE.prototype.isFinishedAnimation = function(newGapPos) {
+    if(this.direction == DIRECTION.TOP || this.direction == DIRECTION.RIGHT)
+    {
+        if(newGapPos.x <= this.properties.pos.x && newGapPos.y <= this.properties.pos.y)
+        {
+            //console.log('endAnimation');
+
+            this.isAnimating = false;
+        }
+    }
+    else
+    {
+        if(newGapPos.x >= this.properties.pos.x && newGapPos.y >= this.properties.pos.y)
+        {
+            //console.log('endAnimation');
+
+            this.isAnimating = false;
+        }
+    }
 };
 
 PLANE.prototype.movePlane = function(direction, map) {
@@ -94,7 +110,7 @@ PLANE.prototype.movePlane = function(direction, map) {
 
             var nextPos = this.nextPos(direction);
 
-            console.log(nextPos);
+            //console.log(nextPos);
 
             if(nextPos.x >= 0 && nextPos.y <= map.grid.width && nextPos.y >= 0 && nextPos.y <= (map.grid.height - 2) && map.mapClass[nextPos.y][nextPos.x].canGo)
             {
@@ -103,11 +119,11 @@ PLANE.prototype.movePlane = function(direction, map) {
                 this.isAnimating = true;
                 this.oldPos = this.properties.pos;
 
-                console.log(this.oldPos.y);
+                //console.log(this.oldPos.y);
 
                 this.properties.pos = nextPos;
 
-                console.log('nextPos' + nextPos.y);
+                //console.log('nextPos' + nextPos.y);
 
                 return true;
             }
@@ -118,7 +134,7 @@ PLANE.prototype.movePlane = function(direction, map) {
         }
         else
         {
-            this.properties.pos.x += 1;
+            this.properties.pos.y += 1;
 
             return true;
         }
