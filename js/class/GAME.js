@@ -10,6 +10,8 @@ function GAME(id, name, canvasId, sizeCanvas) {
     this.canvas.width = sizeCanvas.width;
     this.canvas.height = sizeCanvas.height;
 
+    this.planeProbability = 1; // valeur entre 1-10
+
     this.context2d = this.canvas.getContext('2d');
 
     this.createElements();
@@ -25,11 +27,23 @@ GAME.prototype.createElements = function() {
 
 GAME.prototype.drawScene = function(newBloc) {
     this.context2d.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this.map.drawGrid(this.context2d, newBloc);
-
-    for(var i = 0; i < this.planes.length; i++)
+    if (newBloc)
     {
-        this.planes[i].drawPlane(this.context2d);
+        var newPlane = new PLANE(1,'name',0,false,{x: Math.floor(Math.random()*20+1) , y: 0 });
+        this.planes.push(newPlane);
     }
+    this.map.drawGrid(this.context2d, newBloc);
+    this.planes[0].drawPlane(this.context2d)
+
+    //this.context2d.save();
+    //this.context2d.rotate(1);
+
+    for(var i = 1; i < this.planes.length; i++)
+    {
+        this.planes[i].drawPlane(this.context2d)
+        this.planes[i].movePlane()
+    }
+
+   // this.context2d.restore();
+
 };
