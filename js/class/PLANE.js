@@ -16,8 +16,8 @@ function PLANE(id, name, type, isPlayer, position) {
     this.isPlayer = isPlayer;
 
     this.direction = DIRECTION.TOP;
-    this.oldPos = null;
-    this.animationState = -1;
+    this.oldPos = {x: 0, y: 0};
+    this.isAnimating = false;
 
     this.isLoaded = false;
 
@@ -28,12 +28,14 @@ PLANE.prototype.loadModel = function(type, position) {
     this.properties = {
         width: 40,
         height: 40,
-        speed: 1.5,
-        gap: 1.5/20,
+        speed: 2,
+        gap: 0.1,
         pos: {x: position.x, y: position.y}
     };
 
     this.isLoaded = true;
+
+    this.test = 0;
 };
 
 PLANE.prototype.gModel = function() {
@@ -43,23 +45,21 @@ PLANE.prototype.gModel = function() {
 PLANE.prototype.drawPlane = function(context2d) {
     if(this.isLoaded)
     {
-        if(this.isPlayer && this.animationState >= 0)
+        if(this.isPlayer && this.isAnimating)
         {
             //ANIMATION
             var newGapPos = this.posGap();
 
-            console.log(newGapPos);
+            console.log(this.test, newGapPos, this.properties.pos.y);
 
-            context2d.drawImage(document.getElementById('space'), newGapPos.x, newGapPos.y);
+            context2d.drawImage(document.getElementById('space'), (newGapPos.x * 20), (newGapPos.y * 20));
 
-            /*
             if(newGapPos.x >= this.properties.pos.x && newGapPos.y >= this.properties.pos.y)
             {
                 console.log('endAnimation');
 
-                this.animationState = -1;
+                this.isAnimating = false;
             }
-            */
         }
         else
         {
@@ -70,14 +70,16 @@ PLANE.prototype.drawPlane = function(context2d) {
 
 PLANE.prototype.posGap = function() {
     if (this.direction === DIRECTION.LEFT) {
-        return {x: ((this.oldPos.x + this.properties.gap) * 20), y: this.oldPos.y};
+        this.oldPos.x += this.properties.gap;
     } else if (this.direction === DIRECTION.RIGHT) {
-        return {x: ((this.oldPos.x - this.properties.gap) * 20), y: this.oldPos.y};
+        this.oldPos.x -= this.properties.gap;
     } else if (this.direction === DIRECTION.TOP) {
-        return {x: this.oldPos.x, y: ((this.oldPos.y - this.properties.gap) * 20)};
+        this.oldPos.y -= this.properties.gap;
     } else if (this.direction === DIRECTION.BOTTOM) {
-        return {x: this.oldPos.x, y: ((this.oldPos.y + this.properties.gap) * 20)};
+        this.oldPos.y += this.properties.gap;
     }
+
+    return {x: this.oldPos.x, y : this.oldPos.y};
 };
 
 PLANE.prototype.movePlane = function(direction, map) {
@@ -85,7 +87,7 @@ PLANE.prototype.movePlane = function(direction, map) {
     {
         if(this.isPlayer)
         {
-            if(this.animationState >= 0)
+            if(this.isAnimating)
             {
                 return false;
             }
@@ -96,9 +98,16 @@ PLANE.prototype.movePlane = function(direction, map) {
 
             if(nextPos.x >= 0 && nextPos.y <= map.grid.width && nextPos.y >= 0 && nextPos.y <= (map.grid.height - 2) && map.mapClass[nextPos.y][nextPos.x].canGo)
             {
-                this.animationState = 1;
+                this.direction = direction;
+
+                this.isAnimating = true;
                 this.oldPos = this.properties.pos;
+
+                console.log(this.oldPos.y);
+
                 this.properties.pos = nextPos;
+
+                console.log('nextPos' + nextPos.y);
 
                 return true;
             }

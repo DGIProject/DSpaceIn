@@ -25,7 +25,7 @@ function startGame() {
         }
 
         margin += 1;
-    }, 100);
+    }, 500);
 }
 
 initializeGame();
