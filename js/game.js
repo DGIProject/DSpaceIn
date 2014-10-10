@@ -8,6 +8,7 @@ var game;
 var tabKeys = [];
 
 var margin = 20;
+var intervalGame;
 
 function initializeGame() {
     game = new GAME(0, 'Test', 'canvas', {width: 500, height: 500});
@@ -33,7 +34,7 @@ function startGame() {
         }
     };
 
-    setInterval(function() {
+    intervalGame = setInterval(function() {
         for(var i = 0; i < tabKeys.length; i++)
         {
             switch(tabKeys[i]) {
@@ -66,7 +67,7 @@ function startGame() {
         }
 
         margin += 1;
-    }, 20);
+    }, game.timeRefresh);
 }
 
 initializeGame();

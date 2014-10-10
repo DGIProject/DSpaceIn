@@ -9,7 +9,7 @@ var DIRECTION = {
     BOTTOM: 4
 };
 
-function PLANE(id, name, type, isPlayer, position) {
+function PLANE(id, name, type, isPlayer, position, infoGame) {
     this.id = id;
     this.name = name;
     this.type = type;
@@ -17,21 +17,27 @@ function PLANE(id, name, type, isPlayer, position) {
 
     this.direction = DIRECTION.TOP;
     this.oldPos = {x: 0, y: 0};
+
     this.isAnimating = false;
+    this.animationState = 0;
 
     this.isLoaded = false;
 
-    this.loadModel(type, position);
+    this.loadModel(type, position, infoGame);
 }
 
-PLANE.prototype.loadModel = function(type, position) {
+PLANE.prototype.loadModel = function(type, position, infoGame) {
     this.properties = {
         width: 40,
         height: 40,
         speed: 2,
-        gap: 0.1,
+        gap: 0.25,
         pos: {x: position.x, y: position.y}
     };
+
+    this.animationStateT = Math.floor(((infoGame.timeRefresh * infoGame.sizeBloc) / this.properties.gap) / (infoGame.timeRefresh * 20));
+
+    //console.log(infoGame, this.animationStateT);
 
     this.isLoaded = true;
 
@@ -54,7 +60,20 @@ PLANE.prototype.drawPlane = function(context2d) {
 
             context2d.drawImage(document.getElementById('space'), (newGapPos.x * 20), (newGapPos.y * 20));
 
-            this.isFinishedAnimation(newGapPos);
+            //this.isFinishedAnimation(newGapPos);
+
+            if(this.animationState == this.animationStateT)
+            {
+                //END ANIMATION
+                //console.log('endAnimation');
+
+                this.isAnimating = false;
+                this.animationState = 0;
+            }
+
+            this.animationState++;
+
+            //console.log(this.animationState);
         }
         else
         {
@@ -77,27 +96,6 @@ PLANE.prototype.posGap = function() {
     return {x: this.oldPos.x, y : this.oldPos.y};
 };
 
-PLANE.prototype.isFinishedAnimation = function(newGapPos) {
-    if(this.direction == DIRECTION.TOP || this.direction == DIRECTION.RIGHT)
-    {
-        if(newGapPos.x <= this.properties.pos.x && newGapPos.y <= this.properties.pos.y)
-        {
-            //console.log('endAnimation');
-
-            this.isAnimating = false;
-        }
-    }
-    else
-    {
-        if(newGapPos.x >= this.properties.pos.x && newGapPos.y >= this.properties.pos.y)
-        {
-            //console.log('endAnimation');
-
-            this.isAnimating = false;
-        }
-    }
-};
-
 PLANE.prototype.movePlane = function(direction, map) {
     if(this.isLoaded)
     {
@@ -112,7 +110,7 @@ PLANE.prototype.movePlane = function(direction, map) {
 
             //console.log(nextPos);
 
-            if(nextPos.x >= 0 && nextPos.y <= map.grid.width && nextPos.y >= 0 && nextPos.y <= (map.grid.height - 2) && map.mapClass[nextPos.y][nextPos.x].canGo)
+            if(nextPos.x >= 0 && nextPos.x <= map.grid.width && nextPos.y >= 0 && nextPos.y <= (map.grid.height - 2) && map.mapClass[nextPos.y][nextPos.x].canGo)
             {
                 this.direction = direction;
 
@@ -134,7 +132,7 @@ PLANE.prototype.movePlane = function(direction, map) {
         }
         else
         {
-            this.properties.pos.y += 1;
+            this.properties.pos.y += 0.5;
 
             return true;
         }
