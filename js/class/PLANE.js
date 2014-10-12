@@ -30,10 +30,11 @@ PLANE.prototype.loadModel = function(type, position, infoGame) {
     this.properties = {
         width: 40,
         height: 40,
-        speed: 2,
-        gap: 0.25,
+        speed: 25, //0 - 100
         pos: {x: position.x, y: position.y}
     };
+
+    this.properties.gap = this.properties.speed / 100;
 
     this.animationStateT = Math.floor(((infoGame.timeRefresh * infoGame.sizeBloc) / this.properties.gap) / (infoGame.timeRefresh * 20));
 

@@ -2,7 +2,7 @@
  * Created by Dylan on 04/10/2014.
  */
 
-function GAME(id, name, canvasId, sizeCanvas) {
+function GAME(id, name, canvasId, sizeCanvas, mapFile) {
     this.id = id;
     this.name = name;
 
@@ -16,11 +16,11 @@ function GAME(id, name, canvasId, sizeCanvas) {
 
     this.context2d = this.canvas.getContext('2d');
 
-    this.createElements();
+    this.createElements(mapFile);
 }
 
-GAME.prototype.createElements = function() {
-    this.map = new MAP('Test', {width: this.canvas.width, height: this.canvas.height});
+GAME.prototype.createElements = function(mapFile) {
+    this.map = new MAP(mapFile, {width: this.canvas.width, height: this.canvas.height});
     this.planeP = new PLANE(0, 'planeP', 0, true, {x: Math.floor(this.map.grid.width / 2), y: (this.map.grid.height - 2)}, {timeRefresh: this.timeRefresh, sizeBloc: this.map.sizeBloc});
 
     this.planes = [];
